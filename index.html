@@ -25,14 +25,16 @@ body{
 button,input,select,textarea{font:inherit}
 button{cursor:pointer;border:0}
 .hidden{display:none!important}
+
 header{
- height:68px;
+ min-height:68px;
  background:var(--navy);
  color:white;
  display:flex;
  align-items:center;
  justify-content:space-between;
- padding:0 max(22px,calc((100vw - 1180px)/2))
+ padding:10px max(22px,calc((100vw - 1180px)/2));
+ gap:12px
 }
 .brand{font-weight:850;letter-spacing:.7px;font-size:20px}
 .brand small{
@@ -49,9 +51,10 @@ header{
  font-size:13px;
  color:#dbe5f2
 }
+
 .wrap{max-width:1180px;margin:30px auto;padding:0 22px}
 .layout{display:grid;grid-template-columns:235px 1fr;gap:24px}
-.side,.panel,.stat,.auth-card{
+.side,.panel,.stat,.auth-card,.folder-card,.crumb{
  background:white;
  border:1px solid var(--line);
  border-radius:16px
@@ -78,6 +81,7 @@ header{
 }
 h1{font-size:27px;margin:7px 0}
 p.sub{margin:0;color:var(--muted);font-size:14px}
+
 .stats{
  display:grid;
  grid-template-columns:repeat(3,1fr);
@@ -87,9 +91,13 @@ p.sub{margin:0;color:var(--muted);font-size:14px}
 .stat{padding:19px}
 .stat span{font-size:12px;color:var(--muted)}
 .stat strong{display:block;font-size:29px;margin-top:9px}
+
 .panel{padding:22px;margin-bottom:18px}
 .panel h2{font-size:17px;margin:0 0 16px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+
 label{
  display:block;
  font-size:12px;
@@ -111,7 +119,9 @@ input:focus,select:focus,textarea:focus{
  border-color:var(--blue);
  box-shadow:0 0 0 3px #3167d51a
 }
+input[readonly]{background:#f5f7fb;color:#536078}
 textarea{min-height:86px;resize:vertical}
+
 .btn{
  padding:11px 16px;
  border-radius:9px;
@@ -123,6 +133,7 @@ textarea{min-height:86px;resize:vertical}
 .btn.danger{background:#fff0f0;color:#c13d3d}
 .btn.small{padding:7px 10px;font-size:12px}
 .actions{display:flex;gap:9px;flex-wrap:wrap}
+
 .list{display:grid;gap:10px}
 .item{
  border:1px solid var(--line);
@@ -132,7 +143,7 @@ textarea{min-height:86px;resize:vertical}
  align-items:center;
  gap:12px
 }
-.fileicon{
+.fileicon,.foldericon{
  width:40px;
  height:40px;
  background:#edf3ff;
@@ -143,6 +154,7 @@ textarea{min-height:86px;resize:vertical}
  font-size:18px;
  flex:none
 }
+.foldericon{font-size:23px}
 .iteminfo{min-width:0;flex:1}
 .iteminfo strong{
  display:block;
@@ -162,16 +174,55 @@ textarea{min-height:86px;resize:vertical}
  border-radius:12px;
  font-size:13px
 }
+
+.folder-card{
+ padding:14px;
+ display:flex;
+ align-items:center;
+ gap:10px;
+ text-align:left;
+ color:var(--text);
+ min-width:0;
+ width:100%;
+ transition:.15s
+}
+.folder-card:hover{
+ border-color:#9db9f2;
+ background:#f9fbff
+}
+.folder-card .folder-meta{min-width:0;flex:1}
+.folder-card strong{display:block;font-size:14px}
+.folder-card small{
+ display:block;
+ color:var(--muted);
+ margin-top:5px
+}
+.arrow{color:#7d8ba2;font-size:20px}
+
+.crumb{
+ padding:12px 15px;
+ margin-bottom:14px;
+ color:#64728a;
+ font-size:13px;
+ display:flex;
+ gap:10px;
+ align-items:center;
+ flex-wrap:wrap
+}
+.crumb button{
+ background:none;
+ color:var(--blue);
+ padding:0;
+ font-weight:700
+}
+
 .auth-wrap{
  min-height:calc(100vh - 68px);
  display:grid;
  place-items:center;
  padding:25px
 }
-.auth-card{
- width:min(440px,100%);
- padding:30px
-}
+.auth-card{width:min(440px,100%);padding:30px}
 .auth-card h1{font-size:24px}
 .notice{
  font-size:12px;
@@ -193,13 +244,24 @@ textarea{min-height:86px;resize:vertical}
  border-radius:10px;
  font-size:13px;
  box-shadow:0 8px 30px #0002;
- z-index:10
+ z-index:10;
+ max-width:90vw
 }
 footer{
  text-align:center;
  color:#9aa4b4;
  font-size:11px;
- padding:25px
+ line-height:1.8;
+ padding:25px 16px
+}
+footer .warning{
+ max-width:800px;
+ margin:12px auto 0;
+ font-size:12px
+}
+
+@media(max-width:900px){
+ .grid5{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:760px){
  .layout{grid-template-columns:1fr}
@@ -210,9 +272,11 @@ footer{
  .stat strong{font-size:23px}
  .wrap{margin:18px auto;padding:0 14px}
  .panel{padding:16px}
- .grid2{grid-template-columns:1fr}
- header{padding:0 15px}
+ .grid2,.grid3{grid-template-columns:1fr}
+ .grid5{grid-template-columns:repeat(2,1fr)}
+ header{padding:10px 15px}
  .item{flex-wrap:wrap}
+ .header-right{font-size:11px}
 }
 </style>
 </head>
@@ -230,7 +294,7 @@ footer{
  </div>
 </header>
 
-<!-- 로그인 화면 -->
+<!-- 로그인 -->
 <div id="authScreen" class="auth-wrap">
  <section class="auth-card">
   <div class="eyebrow">WELCOME TO MY RECORD</div>
@@ -238,9 +302,9 @@ footer{
   <p class="sub">생기부와 활동 자료를 한곳에서 관리하는 개인 보관함</p>
 
   <div class="notice">
-   실제 이용 전 안내: 이 사이트는 본인 계정으로 로그인하는 개인 보관함입니다.
-   학교생활기록부에는 민감한 개인정보가 포함될 수 있으므로
-   비밀번호를 공유하지 말고, 공용 기기에서는 로그아웃하세요.
+   학교생활기록부에는 민감한 개인정보가 포함될 수 있습니다.
+   비밀번호를 공유하지 말고 공용 기기에서는 로그아웃하세요.
+   중요한 파일은 별도로 백업해 주세요.
   </div>
 
   <div class="field">
@@ -264,7 +328,7 @@ footer{
  </section>
 </div>
 
-<!-- 메인 화면 -->
+<!-- 메인 -->
 <div id="appScreen" class="wrap hidden">
  <div class="layout">
 
@@ -283,6 +347,32 @@ footer{
      <div class="eyebrow">MY SPACE</div>
      <h1>나의 기록 보관함</h1>
      <p class="sub">학교생활의 중요한 기록을 차곡차곡 정리하세요.</p>
+    </div>
+
+    <div id="profileSetup" class="panel hidden">
+     <h2>학적 기준 설정</h2>
+     <p class="sub" style="margin-bottom:15px">
+      본인의 현재 학년과 해당 학년도를 설정해 주세요.
+      설정한 정보를 기준으로 다른 학년도가 자동 계산됩니다.
+     </p>
+
+     <div class="grid2">
+      <div class="field">
+       <label>현재 학년</label>
+       <select id="baseGrade">
+        <option value="1">1학년</option>
+        <option value="2">2학년</option>
+        <option value="3">3학년</option>
+       </select>
+      </div>
+
+      <div class="field">
+       <label>현재 학년도</label>
+       <input id="baseYear" type="number" min="2000" max="2100" placeholder="예: 2026">
+      </div>
+     </div>
+
+     <button class="btn" id="saveProfileBtn">학적 정보 저장</button>
     </div>
 
     <div class="stats">
@@ -310,6 +400,11 @@ footer{
     </div>
 
     <div class="panel">
+     <h2>학년별 보관함</h2>
+     <div id="homeGradeFolders" class="grid3"></div>
+    </div>
+
+    <div class="panel">
      <h2>최근 등록 자료</h2>
      <div id="recentList" class="list"></div>
     </div>
@@ -320,17 +415,61 @@ footer{
     <div class="welcome">
      <div class="eyebrow">RECORD ARCHIVE</div>
      <h1>생기부 보관함</h1>
-     <p class="sub">학년도와 학년별 학교생활기록부를 보관합니다.</p>
+     <p class="sub">학년별 폴더에서 세특·자율·진로·동아리·종합의견을 관리합니다.</p>
     </div>
-    <div id="recordsList" class="list"></div>
+    <div id="gradeFolders" class="grid3"></div>
+   </section>
+
+   <!-- 학년별 폴더 -->
+   <section id="page-grade" class="page hidden">
+    <div class="welcome">
+     <div class="eyebrow">GRADE ARCHIVE</div>
+     <h1 id="gradePageTitle">학년 보관함</h1>
+     <p class="sub" id="gradePageSub"></p>
+    </div>
+
+    <div class="crumb">
+     <button id="backToGrades">생기부 보관함</button>
+     <span>›</span>
+     <strong id="crumbGrade"></strong>
+    </div>
+
+    <div class="panel">
+     <h2>활동 영역별 보관함</h2>
+     <div id="categoryFolders" class="grid5"></div>
+    </div>
+
+    <div class="panel">
+     <h2 id="gradeRecentTitle">최근 등록 자료</h2>
+     <div id="gradeRecentList" class="list"></div>
+    </div>
+   </section>
+
+   <!-- 영역별 폴더 -->
+   <section id="page-category" class="page hidden">
+    <div class="welcome">
+     <div class="eyebrow">CATEGORY ARCHIVE</div>
+     <h1 id="categoryPageTitle">영역 보관함</h1>
+     <p class="sub" id="categoryPageSub"></p>
+    </div>
+
+    <div class="crumb">
+     <button id="backToGradesFromCategory">생기부 보관함</button>
+     <span>›</span>
+     <button id="backToGradeFromCategory"></button>
+     <span>›</span>
+     <strong id="crumbCategory"></strong>
+    </div>
+
+    <div id="categoryFiles" class="list"></div>
    </section>
 
    <!-- 자료 보관함 -->
    <section id="page-materials" class="page hidden">
     <div class="welcome">
      <div class="eyebrow">MATERIAL ARCHIVE</div>
-     <h1>생기부 자료 보관함</h1>
-     <p class="sub">탐구 보고서, 발표 자료, 활동 사진 등을 보관합니다.</p>
+     <h1>자료 보관함</h1>
+     <p class="sub">수행 자료, 발표 자료, 준비 자료를 별도로 보관합니다.</p>
     </div>
     <div id="materialsList" class="list"></div>
    </section>
@@ -340,11 +479,10 @@ footer{
     <div class="welcome">
      <div class="eyebrow">ADD NEW FILE</div>
      <h1>자료 등록</h1>
-     <p class="sub">파일은 로그인한 계정의 비공개 저장 공간에 보관됩니다.</p>
+     <p class="sub">등록 종류에 따라 생기부 또는 자료 보관함으로 자동 분류됩니다.</p>
     </div>
 
     <div class="panel">
-
      <div class="field">
       <label>자료 종류</label>
       <select id="kind">
@@ -356,20 +494,12 @@ footer{
      <div class="grid2">
       <div class="field">
        <label>자료 제목 *</label>
-       <input id="title" placeholder="예: 2026학년도 학교생활기록부">
+       <input id="title" placeholder="자료 제목을 입력하세요">
       </div>
 
       <div class="field">
-       <label>학년도</label>
-       <input
-        id="year"
-        type="number"
-        inputmode="numeric"
-        min="2000"
-        max="2100"
-        value="2026"
-        placeholder="예: 2026"
-       >
+       <label>학년도 (자동 설정)</label>
+       <input id="year" type="number" readonly placeholder="학년 선택 후 자동 표시">
       </div>
      </div>
 
@@ -377,26 +507,23 @@ footer{
       <div class="field">
        <label>학년</label>
        <select id="grade">
-        <option>1학년</option>
-        <option selected>2학년</option>
-        <option>3학년</option>
-        <option>기타</option>
+        <option value="1학년">1학년</option>
+        <option value="2학년">2학년</option>
+        <option value="3학년">3학년</option>
        </select>
       </div>
 
       <div class="field">
-       <label>자료 분류</label>
+       <label id="categoryLabel">생기부 영역</label>
        <select id="category"></select>
       </div>
      </div>
 
+     <div id="yearHelp" class="sub" style="font-size:12px;margin:-5px 0 14px"></div>
+
      <div class="field">
       <label>파일 선택 (PDF, DOCX, PPTX, XLSX, 이미지 / 최대 20MB)</label>
-      <input
-       id="file"
-       type="file"
-       accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png"
-      >
+      <input id="file" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png">
      </div>
 
      <div class="field">
@@ -413,24 +540,14 @@ footer{
 </div>
 
 <footer>
-  <div style="margin-bottom:14px;">
-    MY RECORD · PRIVATE SCHOOL LIFE ARCHIVE
-  </div>
-
-  <div style="
-    max-width:800px;
-    margin:0 auto;
-    color:#9aa4b4;
-    font-size:12px;
-    line-height:1.8;
-    text-align:center;
-  ">
-    ※ 본 서비스는 자료의 영구 보관을 보장하지 않습니다.
-    예상치 못한 오류나 시스템 문제로 자료가 유실될 수 있으므로
-    <br>
-    중요한 파일은 반드시 별도로 백업해 주세요.
-  </div>
+ MY RECORD · PRIVATE SCHOOL LIFE ARCHIVE
+ <div class="warning">
+  ※ 본 서비스는 자료의 영구 보관을 보장하지 않습니다.
+  예상치 못한 오류나 시스템 문제로 자료가 유실될 수 있으므로
+  중요한 파일은 반드시 별도로 백업해 주세요.
+ </div>
 </footer>
+
 <div id="toast" class="toast hidden"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -441,122 +558,86 @@ footer{
 // SUPABASE 연결 설정
 // ========================================
 
-const SUPABASE_URL = "https://xoztcjnbbdctwvgxixll.supabase.co";
+const SUPABASE_URL="https://xoztcjnbbdctwvgxixll.supabase.co";
 
-const SUPABASE_ANON_KEY =
-"sb_publishable_a4jEdsPgdnl2B5VVytStsg_dPuzMm80";
+const SUPABASE_ANON_KEY=
+"sb_publishable_a4jEdsPgdn12B5VYytStsg_dPuzMm80";
 
-const configured =
- SUPABASE_URL.startsWith("https://") &&
- !SUPABASE_URL.includes("YOUR_") &&
- !SUPABASE_ANON_KEY.includes("YOUR_");
+const configured=
+ SUPABASE_URL.startsWith('https://') &&
+ !SUPABASE_URL.includes('YOUR_') &&
+ !SUPABASE_ANON_KEY.includes('YOUR_');
 
-let client = null;
-let user = null;
-let files = [];
+let client=null;
+let user=null;
+let files=[];
+let baseGrade=null;
+let baseYear=null;
+let currentGrade=null;
+let currentCategory=null;
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 
 
 // ========================================
-// 기본 기능
+// 분류 설정
+// ========================================
+
+const recordCategories=[
+ '세특',
+ '자율',
+ '진로',
+ '동아리',
+ '종합의견'
+];
+
+const materialCategories=[
+ '수행 자료(제출용)',
+ '발표 자료(제출용)',
+ '준비 자료'
+];
+
+// 이전 버전의 분류명도 인식
+const legacyCategoryMap={
+ '세부능력 및 특기사항':'세특',
+ '자율·자치 활동':'자율',
+ '자율 활동':'자율',
+ '진로 활동':'진로',
+ '동아리 활동':'동아리',
+ '행동특성 및 종합의견':'종합의견',
+ '행동특성 및 종합 의견':'종합의견'
+};
+
+function normalizedCategory(f){
+ return legacyCategoryMap[f.category]||f.category||'기타';
+}
+
+function gradeNumber(value){
+ const m=String(value||'').match(/[1-3]/);
+ return m?Number(m[0]):null;
+}
+
+function expectedYear(grade){
+ if(!baseGrade||!baseYear)return null;
+ return baseYear+(Number(grade)-Number(baseGrade));
+}
+
+function gradeLabel(n){
+ return `${n}학년`;
+}
+
+
+// ========================================
+// 기본 화면 기능
 // ========================================
 
 function toast(message){
- $('toast').textContent = message;
+ $('toast').textContent=message;
  $('toast').classList.remove('hidden');
 
  setTimeout(()=>{
   $('toast').classList.add('hidden');
- },3000);
-}
-
-function showAuth(){
- $('authScreen').classList.remove('hidden');
- $('appScreen').classList.add('hidden');
- $('logoutBtn').classList.add('hidden');
- $('userLabel').textContent = '학생 기록 보관 서비스';
-}
-
-function showApp(){
- $('authScreen').classList.add('hidden');
- $('appScreen').classList.remove('hidden');
- $('logoutBtn').classList.remove('hidden');
- $('userLabel').textContent = user.email || '내 계정';
- loadFiles();
-}
-
-function page(p){
- document.querySelectorAll('.page').forEach(x=>{
-  x.classList.add('hidden');
- });
-
- $('page-'+p).classList.remove('hidden');
-
- document.querySelectorAll('.nav').forEach(b=>{
-  b.classList.toggle('active',b.dataset.page===p);
- });
-}
-
-
-// ========================================
-// 자료 분류 설정
-// ========================================
-
-const categoryOptions = {
-
- record:[
-  '세부능력 및 특기사항',
-  '자율·자치 활동',
-  '동아리 활동',
-  '진로 활동',
-  '행동특성 및 종합의견'
- ],
-
- material:[
-  '발표 자료(제출용)',
-  '수행 자료(제출용)',
-  '준비 자료'
- ]
-
-};
-
-function updateCategories(){
-
- const kind = $('kind').value;
-
- const options = categoryOptions[kind] || [];
-
- $('category').innerHTML = options
-  .map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`)
-  .join('');
-
-}
-
-$('kind').addEventListener('change',updateCategories);
-
-updateCategories();
-
-
-// ========================================
-// 화면 이동
-// ========================================
-
-document.querySelectorAll('[data-page]').forEach(b=>{
- b.onclick = ()=>page(b.dataset.page);
-});
-
-document.querySelectorAll('[data-go]').forEach(b=>{
- b.onclick = ()=>page(b.dataset.go);
-});
-
-
-// ========================================
-// 자료 목록 출력
-// ========================================
-
-function empty(text){
- return `<div class="empty">${text}</div>`;
+ },3200);
 }
 
 function escapeHtml(s=''){
@@ -569,46 +650,294 @@ function escapeHtml(s=''){
  }[c]));
 }
 
-function card(f){
+function showAuth(){
+ $('authScreen').classList.remove('hidden');
+ $('appScreen').classList.add('hidden');
+ $('logoutBtn').classList.add('hidden');
+ $('userLabel').textContent='학생 기록 보관 서비스';
+}
+
+function showApp(){
+ $('authScreen').classList.add('hidden');
+ $('appScreen').classList.remove('hidden');
+ $('logoutBtn').classList.remove('hidden');
+ $('userLabel').textContent=user.email||'내 계정';
+
+ loadProfile();
+ loadFiles();
+}
+
+function page(p){
+ document.querySelectorAll('.page').forEach(x=>{
+  x.classList.add('hidden');
+ });
+
+ $('page-'+p).classList.remove('hidden');
+
+ document.querySelectorAll('.nav').forEach(b=>{
+  b.classList.toggle(
+   'active',
+   b.dataset.page===(p==='grade'||p==='category'?'records':p)
+  );
+ });
+
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+
+
+// ========================================
+// 학적 정보 설정
+// ========================================
+
+async function loadProfile(){
+
+ const meta=user?.user_metadata||{};
+
+ baseGrade=Number(meta.my_record_base_grade)||null;
+ baseYear=Number(meta.my_record_base_year)||null;
+
+ setProfileUI();
+ renderGradeFolders();
+}
+
+function setProfileUI(){
+
+ const missing=!baseGrade||!baseYear;
+
+ $('profileSetup').classList.toggle('hidden',!missing);
+
+ if(baseGrade){
+  $('baseGrade').value=String(baseGrade);
+ }
+
+ if(baseYear){
+  $('baseYear').value=String(baseYear);
+ }
+
+ updateUploadYear();
+}
+
+$('saveProfileBtn').onclick=async()=>{
+
+ const g=Number($('baseGrade').value);
+ const y=Number($('baseYear').value);
+
+ if(![1,2,3].includes(g)||
+    !Number.isInteger(y)||
+    y<2000||
+    y>2100){
+
+  toast('현재 학년과 올바른 학년도를 입력하세요.');
+  return;
+ }
+
+ const {data,error}=await client.auth.updateUser({
+  data:{
+   my_record_base_grade:g,
+   my_record_base_year:y
+  }
+ });
+
+ if(error){
+  toast('학적 정보 저장 실패: '+error.message);
+  return;
+ }
+
+ user=data.user;
+ baseGrade=g;
+ baseYear=y;
+
+ setProfileUI();
+ renderGradeFolders();
+
+ toast('학적 기준을 저장했습니다.');
+};
+
+
+// ========================================
+// 등록 화면의 학년·학년도 연동
+// ========================================
+
+function updateCategories(){
+
+ const kind=$('kind').value;
+
+ const opts=kind==='record'
+  ?recordCategories
+  :materialCategories;
+
+ $('categoryLabel').textContent=
+  kind==='record'?'생기부 영역':'자료 분류';
+
+ $('category').innerHTML=opts.map(v=>
+  `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`
+ ).join('');
+
+ updateUploadYear();
+}
+
+function updateUploadYear(){
+
+ const g=gradeNumber($('grade').value);
+ const y=expectedYear(g);
+
+ $('year').value=y??'';
+
+ $('yearHelp').textContent=y
+  ?`${gradeLabel(g)}은(는) ${y}학년도 폴더에 저장됩니다.`
+  :'먼저 대시보드에서 현재 학년과 학년도를 설정해 주세요.';
+}
+
+$('kind').addEventListener('change',updateCategories);
+$('grade').addEventListener('change',updateUploadYear);
+
+updateCategories();
+
+
+// ========================================
+// 화면 이동
+// ========================================
+
+document.querySelectorAll('[data-page]').forEach(b=>{
+ b.onclick=()=>page(b.dataset.page);
+});
+
+document.querySelectorAll('[data-go]').forEach(b=>{
+ b.onclick=()=>page(b.dataset.go);
+});
+
+
+// ========================================
+// 학년별 폴더 생성
+// ========================================
+
+function recordFilesForGrade(n){
+
+ return files.filter(f=>
+  f.kind==='record' &&
+  gradeNumber(f.grade)===n &&
+  Number(f.year)===expectedYear(n)
+ );
+}
+
+function folderCard(n){
+
+ const list=recordFilesForGrade(n);
+
+ return `
+ <button class="folder-card" data-grade-open="${n}">
+  <div class="foldericon">📁</div>
+  <div class="folder-meta">
+   <strong>${n}학년 (${expectedYear(n)??'학년도 미설정'})</strong>
+   <small>등록 자료 ${list.length}개</small>
+  </div>
+  <span class="arrow">›</span>
+ </button>
+ `;
+}
+
+function renderGradeFolders(){
+
+ const html=[1,2,3].map(n=>folderCard(n)).join('');
+
+ $('homeGradeFolders').innerHTML=
+  baseGrade&&baseYear
+   ?html
+   :empty('학적 기준을 먼저 설정하면 학년별 폴더가 생성됩니다.');
+
+ $('gradeFolders').innerHTML=
+  baseGrade&&baseYear
+   ?html
+   :empty('대시보드에서 현재 학년과 학년도를 먼저 설정해 주세요.');
+
+ document.querySelectorAll('[data-grade-open]').forEach(b=>{
+  b.onclick=()=>openGrade(Number(b.dataset.gradeOpen));
+ });
+}
+
+
+// ========================================
+// 자료 카드
+// ========================================
+
+function empty(text){
+ return `<div class="empty">${escapeHtml(text)}</div>`;
+}
+
+function itemCard(f){
 
  return `
  <article class="item">
-
   <div class="fileicon">
    ${f.kind==='record'?'▤':'▣'}
   </div>
 
   <div class="iteminfo">
    <strong>${escapeHtml(f.title)}</strong>
-
    <small>
     ${escapeHtml(f.year||'')} ·
     ${escapeHtml(f.grade||'')} ·
-    ${escapeHtml(f.category||'')} ·
+    ${escapeHtml(f.kind==='record'?normalizedCategory(f):f.category||'')} ·
     ${new Date(f.created_at).toLocaleDateString('ko-KR')}
    </small>
   </div>
 
-  <button class="btn secondary small" data-open="${f.id}">
+  <button class="btn secondary small" data-open="${escapeHtml(f.id)}">
    열기
   </button>
 
-  <button class="btn danger small" data-delete="${f.id}">
+  <button class="btn danger small" data-delete="${escapeHtml(f.id)}">
    삭제
   </button>
-
  </article>
  `;
 }
 
+function bindItemActions(){
+
+ document.querySelectorAll('[data-open]').forEach(b=>{
+  b.onclick=()=>openFile(b.dataset.open);
+ });
+
+ document.querySelectorAll('[data-delete]').forEach(b=>{
+  b.onclick=()=>deleteFile(b.dataset.delete);
+ });
+
+}
+
 
 // ========================================
-// 데이터 불러오기
+// 전체 자료 불러오기 및 대시보드
 // ========================================
+
+function render(){
+
+ const records=files.filter(f=>f.kind==='record');
+ const materials=files.filter(f=>f.kind==='material');
+
+ $('recordCount').textContent=records.length;
+ $('materialCount').textContent=materials.length;
+ $('totalCount').textContent=files.length;
+
+ $('materialsList').innerHTML=
+  materials.length
+   ?materials.map(itemCard).join('')
+   :empty('보관된 자료가 없습니다.');
+
+ $('recentList').innerHTML=
+  files.length
+   ?files.slice(0,4).map(itemCard).join('')
+   :empty('아직 등록된 자료가 없습니다.');
+
+ renderGradeFolders();
+ bindItemActions();
+}
 
 async function loadFiles(){
 
- const {data,error} = await client
+ if(!client||!user)return;
+
+ const {data,error}=await client
   .from('documents')
   .select('*')
   .order('created_at',{ascending:false});
@@ -618,49 +947,122 @@ async function loadFiles(){
   return;
  }
 
- files = data || [];
+ files=data||[];
 
  render();
+
+ if(currentGrade){
+  renderGradePage(currentGrade);
+ }
+
+ if(currentGrade&&currentCategory){
+  renderCategoryPage(currentGrade,currentCategory);
+ }
 }
 
 
 // ========================================
-// 보관함 화면 업데이트
+// 학년별 보관함
 // ========================================
 
-function render(){
+function openGrade(n){
 
- const records = files.filter(f=>f.kind==='record');
- const materials = files.filter(f=>f.kind==='material');
+ currentGrade=n;
+ currentCategory=null;
 
- $('recordCount').textContent = records.length;
- $('materialCount').textContent = materials.length;
- $('totalCount').textContent = files.length;
-
- $('recordsList').innerHTML =
-  records.length
-   ? records.map(card).join('')
-   : empty('등록된 생기부가 없습니다.');
-
- $('materialsList').innerHTML =
-  materials.length
-   ? materials.map(card).join('')
-   : empty('보관된 자료가 없습니다.');
-
- $('recentList').innerHTML =
-  files.length
-   ? files.slice(0,4).map(card).join('')
-   : empty('아직 등록된 자료가 없습니다.');
-
- document.querySelectorAll('[data-open]').forEach(b=>{
-  b.onclick = ()=>openFile(b.dataset.open);
- });
-
- document.querySelectorAll('[data-delete]').forEach(b=>{
-  b.onclick = ()=>deleteFile(b.dataset.delete);
- });
-
+ renderGradePage(n);
+ page('grade');
 }
+
+function renderGradePage(n){
+
+ const year=expectedYear(n);
+ const list=recordFilesForGrade(n);
+
+ $('gradePageTitle').textContent=
+  `${n}학년 (${year??'학년도 미설정'})`;
+
+ $('gradePageSub').textContent=
+  `등록 자료 ${list.length}개`;
+
+ $('crumbGrade').textContent=`${n}학년`;
+
+ const counts=recordCategories.map(c=>({
+  c,
+  count:list.filter(f=>normalizedCategory(f)===c).length
+ }));
+
+ $('categoryFolders').innerHTML=counts.map(x=>`
+  <button class="folder-card" data-category-open="${escapeHtml(x.c)}">
+   <div class="foldericon">📁</div>
+   <div class="folder-meta">
+    <strong>${escapeHtml(x.c)}</strong>
+    <small>${x.count}개</small>
+   </div>
+   <span class="arrow">›</span>
+  </button>
+ `).join('');
+
+ $('gradeRecentTitle').textContent=
+  `최근 등록 자료 (${n}학년)`;
+
+ $('gradeRecentList').innerHTML=
+  list.length
+   ?list.slice(0,8).map(itemCard).join('')
+   :empty('이 학년에는 등록된 생기부가 없습니다.');
+
+ document.querySelectorAll('[data-category-open]').forEach(b=>{
+  b.onclick=()=>openCategory(n,b.dataset.categoryOpen);
+ });
+
+ bindItemActions();
+}
+
+
+// ========================================
+// 영역별 보관함
+// ========================================
+
+function openCategory(n,c){
+
+ currentGrade=n;
+ currentCategory=c;
+
+ renderCategoryPage(n,c);
+ page('category');
+}
+
+function renderCategoryPage(n,c){
+
+ const list=recordFilesForGrade(n)
+  .filter(f=>normalizedCategory(f)===c);
+
+ $('categoryPageTitle').textContent=c;
+
+ $('categoryPageSub').textContent=
+  `${n}학년 · ${expectedYear(n)}학년도 · ${list.length}개 자료`;
+
+ $('crumbCategory').textContent=c;
+
+ $('backToGradeFromCategory').textContent=
+  `${n}학년 보관함`;
+
+ $('categoryFiles').innerHTML=
+  list.length
+   ?list.map(itemCard).join('')
+   :empty(`등록된 ${c} 자료가 없습니다.`);
+
+ bindItemActions();
+}
+
+$('backToGrades').onclick=()=>page('records');
+
+$('backToGradesFromCategory').onclick=()=>page('records');
+
+$('backToGradeFromCategory').onclick=()=>{
+ renderGradePage(currentGrade);
+ page('grade');
+};
 
 
 // ========================================
@@ -669,22 +1071,21 @@ function render(){
 
 async function openFile(id){
 
- const f = files.find(x=>x.id===id);
+ const f=files.find(x=>String(x.id)===String(id));
 
  if(!f)return;
 
- const {data,error} = await client
+ const {data,error}=await client
   .storage
   .from('private-records')
   .createSignedUrl(f.storage_path,60);
 
  if(error){
-  toast('파일을 열 수 없습니다.');
+  toast('파일을 열 수 없습니다: '+error.message);
   return;
  }
 
  window.open(data.signedUrl,'_blank','noopener');
-
 }
 
 
@@ -696,11 +1097,11 @@ async function deleteFile(id){
 
  if(!confirm('이 자료를 삭제할까요?'))return;
 
- const f = files.find(x=>x.id===id);
+ const f=files.find(x=>String(x.id)===String(id));
 
  if(!f)return;
 
- const a = await client
+ const a=await client
   .storage
   .from('private-records')
   .remove([f.storage_path]);
@@ -710,7 +1111,7 @@ async function deleteFile(id){
   return;
  }
 
- const b = await client
+ const b=await client
   .from('documents')
   .delete()
   .eq('id',id);
@@ -722,8 +1123,7 @@ async function deleteFile(id){
 
  toast('삭제했습니다.');
 
- loadFiles();
-
+ await loadFiles();
 }
 
 
@@ -731,16 +1131,16 @@ async function deleteFile(id){
 // 로그인
 // ========================================
 
-$('loginBtn').onclick = async()=>{
+$('loginBtn').onclick=async()=>{
 
  if(!configured){
   toast('Supabase 연결 설정이 필요합니다.');
   return;
  }
 
- const {data,error} = await client.auth
+ const {data,error}=await client.auth
   .signInWithPassword({
-   email:$('email').value,
+   email:$('email').value.trim(),
    password:$('password').value
   });
 
@@ -749,10 +1149,8 @@ $('loginBtn').onclick = async()=>{
   return;
  }
 
- user = data.user;
-
+ user=data.user;
  showApp();
-
 };
 
 
@@ -760,18 +1158,17 @@ $('loginBtn').onclick = async()=>{
 // 회원가입
 // ========================================
 
-$('signupBtn').onclick = async()=>{
+$('signupBtn').onclick=async()=>{
 
  if(!configured){
   toast('Supabase 연결 설정이 필요합니다.');
   return;
  }
 
- const {data,error} = await client.auth
-  .signUp({
-   email:$('email').value,
-   password:$('password').value
-  });
+ const {error}=await client.auth.signUp({
+  email:$('email').value.trim(),
+  password:$('password').value
+ });
 
  if(error){
   toast(error.message);
@@ -779,7 +1176,6 @@ $('signupBtn').onclick = async()=>{
  }
 
  toast('가입 요청을 처리했습니다. 이메일 인증 후 로그인하세요.');
-
 };
 
 
@@ -787,57 +1183,65 @@ $('signupBtn').onclick = async()=>{
 // 로그아웃
 // ========================================
 
-$('logoutBtn').onclick = async()=>{
+$('logoutBtn').onclick=async()=>{
 
  await client.auth.signOut();
 
- user = null;
- files = [];
+ user=null;
+ files=[];
+ baseGrade=null;
+ baseYear=null;
 
  showAuth();
-
 };
 
 
 // ========================================
-// 자료 등록 및 저장
+// 자료 등록
 // ========================================
 
-$('saveBtn').onclick = async()=>{
+$('saveBtn').onclick=async()=>{
 
  if(!user){
   toast('먼저 로그인하세요.');
   return;
  }
 
- const file = $('file').files[0];
+ if(!baseGrade||!baseYear){
+  toast('대시보드에서 학적 기준을 먼저 설정하세요.');
+  page('home');
+  return;
+ }
 
- const title = $('title').value.trim();
+ const file=$('file').files[0];
+ const title=$('title').value.trim();
+ const kind=$('kind').value;
 
- const year = $('year').value.trim();
+ const g=gradeNumber($('grade').value);
+ const year=Number($('year').value);
 
- if(!title || !file){
+ if(!title||!file){
   toast('제목과 파일을 모두 입력하세요.');
   return;
  }
 
- if(!/^\d{4}$/.test(year)){
-  toast('학년도는 4자리 숫자로 입력하세요. 예: 2026');
+ if(!g||year!==expectedYear(g)){
+  toast('선택한 학년과 학년도가 일치하지 않습니다. 학적 기준을 확인하세요.');
   return;
  }
 
- if(file.size > 20*1024*1024){
+ if(file.size>20*1024*1024){
   toast('파일은 20MB 이하만 등록할 수 있습니다.');
   return;
  }
 
- const safe = file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+ const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
 
- const path =
+ const path=
   `${user.id}/${crypto.randomUUID()}-${safe}`;
 
  // 파일 업로드
- const up = await client
+ const up=await client
   .storage
   .from('private-records')
   .upload(path,file,{upsert:false});
@@ -848,31 +1252,20 @@ $('saveBtn').onclick = async()=>{
  }
 
  // 데이터베이스 저장
- const row = {
-
+ const row={
   user_id:user.id,
-
-  kind:$('kind').value,
-
-  title:title,
-
-  year:year,
-
+  kind,
+  title,
+  year:String(year),
   grade:$('grade').value,
-
   category:$('category').value,
-
   memo:$('memo').value,
-
   storage_path:path,
-
   file_name:file.name,
-
   file_size:file.size
-
  };
 
- const ins = await client
+ const ins=await client
   .from('documents')
   .insert(row);
 
@@ -884,7 +1277,6 @@ $('saveBtn').onclick = async()=>{
    .remove([path]);
 
   toast(ins.error.message);
-
   return;
  }
 
@@ -894,44 +1286,55 @@ $('saveBtn').onclick = async()=>{
  $('memo').value='';
  $('file').value='';
 
- // 자료 종류에 따라 해당 보관함으로 이동
- page(row.kind==='record'?'records':'materials');
+ if(kind==='record'){
+  openGrade(g);
+ }else{
+  page('materials');
+ }
 
- loadFiles();
-
+ await loadFiles();
 };
 
 
 // ========================================
-// Supabase 초기화 및 세션 확인
+// Supabase 초기화 및 로그인 상태 확인
 // ========================================
 
 if(configured){
 
- client = window.supabase.createClient(
+ client=window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
  );
 
- client.auth.getSession().then(({data})=>{
+ client.auth.getSession().then(({data,error})=>{
+
+  if(error){
+   toast(error.message);
+   return;
+  }
 
   if(data.session){
-
-   user = data.session.user;
-
+   user=data.session.user;
    showApp();
-
   }
 
  });
 
  client.auth.onAuthStateChange((_event,session)=>{
 
-  if(session && !user){
+  if(session){
+   user=session.user;
 
-   user = session.user;
+   if($('appScreen').classList.contains('hidden')){
+    showApp();
+   }
 
-   showApp();
+  }else if(user){
+
+   user=null;
+   files=[];
+   showAuth();
 
   }
 
@@ -939,12 +1342,11 @@ if(configured){
 
 }else{
 
- $('authHint').textContent =
+ $('authHint').textContent=
   'Supabase 프로젝트 주소와 공개 키 설정이 필요합니다.';
 
 }
 
 </script>
-
 </body>
 </html>
