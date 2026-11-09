@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#142744"><title>MY RECORD | 학교생활기록부 보관함</title>
+<style>
+:root{--navy:#142744;--blue:#3167d5;--bg:#f4f6fa;--line:#e6eaf0;--muted:#758197;--text:#182338}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.hidden{display:none!important}
+header{height:68px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 max(22px,calc((100vw - 1180px)/2));}
+.brand{font-weight:850;letter-spacing:.7px;font-size:20px}.brand small{display:block;font-size:9px;letter-spacing:2px;color:#b9c8dc;margin-top:3px}
+.header-right{display:flex;gap:12px;align-items:center;font-size:13px;color:#dbe5f2}
+.wrap{max-width:1180px;margin:30px auto;padding:0 22px}.layout{display:grid;grid-template-columns:235px 1fr;gap:24px}
+.side,.panel,.stat,.auth-card{background:white;border:1px solid var(--line);border-radius:16px}
+.side{padding:14px;height:max-content;position:sticky;top:18px}.nav{width:100%;text-align:left;background:white;padding:13px 14px;border-radius:10px;color:#536078;margin:3px 0;font-weight:650}.nav.active,.nav:hover{background:#edf3ff;color:var(--blue)}
+.main{min-width:0}.welcome{margin:4px 0 22px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:1.4px;color:var(--blue)}h1{font-size:27px;margin:7px 0}p.sub{margin:0;color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}.stat{padding:19px}.stat span{font-size:12px;color:var(--muted)}.stat strong{display:block;font-size:29px;margin-top:9px}
+.panel{padding:22px;margin-bottom:18px}.panel h2{font-size:17px;margin:0 0 16px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-size:12px;font-weight:700;margin:0 0 7px;color:#47536a}.field{margin-bottom:15px}
+input,select,textarea{width:100%;padding:12px 13px;border:1px solid #dce2eb;border-radius:9px;background:white;color:var(--text);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #3167d51a}
+textarea{min-height:86px;resize:vertical}.btn{padding:11px 16px;border-radius:9px;font-weight:750;background:var(--blue);color:white}.btn.secondary{background:#edf2fb;color:#30415e}.btn.danger{background:#fff0f0;color:#c13d3d}.btn.small{padding:7px 10px;font-size:12px}
+.actions{display:flex;gap:9px;flex-wrap:wrap}.list{display:grid;gap:10px}.item{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px}.fileicon{width:40px;height:40px;background:#edf3ff;color:var(--blue);border-radius:10px;display:grid;place-items:center;font-size:18px;flex:none}.iteminfo{min-width:0;flex:1}.iteminfo strong{display:block;font-size:14px;overflow-wrap:anywhere}.iteminfo small{display:block;color:var(--muted);margin-top:5px}.empty{padding:35px;text-align:center;color:var(--muted);border:1px dashed #d5dce7;border-radius:12px;font-size:13px}
+.auth-wrap{min-height:calc(100vh - 68px);display:grid;place-items:center;padding:25px}.auth-card{width:min(440px,100%);padding:30px}.auth-card h1{font-size:24px}.notice{font-size:12px;line-height:1.6;color:#66738a;background:#f3f6fb;border-radius:10px;padding:12px;margin:15px 0}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#172b49;color:white;padding:12px 18px;border-radius:10px;font-size:13px;box-shadow:0 8px 30px #0002;z-index:10}
+footer{text-align:center;color:#9aa4b4;font-size:11px;padding:25px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.side{position:static;display:flex;overflow:auto;padding:7px}.nav{white-space:nowrap;width:auto;margin:0 3px;padding:10px}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:23px}.wrap{margin:18px auto;padding:0 14px}.panel{padding:16px}.grid2{grid-template-columns:1fr}header{padding:0 15px}}
+</style>
+</head>
+<body>
+<header><div class="brand">MY RECORD<small>YOUR SCHOOL LIFE ARCHIVE</small></div><div class="header-right"><span id="userLabel">학생 기록 보관 서비스</span><button id="logoutBtn" class="btn small secondary hidden">로그아웃</button></div></header>
+<div id="authScreen" class="auth-wrap">
+ <section class="auth-card">
+  <div class="eyebrow">WELCOME TO MY RECORD</div><h1>나의 학교생활 기록을<br>안전하게 보관하세요.</h1>
+  <p class="sub">생기부와 활동 자료를 한곳에서 관리하는 개인 보관함</p>
+  <div class="notice">실제 이용 전 안내: 이 사이트는 본인 계정으로 로그인하는 개인 보관함입니다. 학교생활기록부에는 민감한 개인정보가 포함될 수 있으므로 비밀번호를 공유하지 말고, 공용 기기에서는 로그아웃하세요.</div>
+  <div class="field"><label>이메일</label><input id="email" type="email" placeholder="name@example.com" autocomplete="email"></div>
+  <div class="field"><label>비밀번호</label><input id="password" type="password" placeholder="6자 이상" autocomplete="current-password"></div>
+  <div class="actions"><button class="btn" id="loginBtn">로그인</button><button class="btn secondary" id="signupBtn">회원가입</button></div>
+  <p id="authHint" class="sub" style="font-size:12px;margin-top:15px">관리자가 Supabase 연결 설정을 완료하면 계정을 만들 수 있습니다.</p>
+ </section>
+</div>
+<div id="appScreen" class="wrap hidden">
+ <div class="layout">
+  <aside class="side">
+   <button class="nav active" data-page="home">⌂　대시보드</button><button class="nav" data-page="records">▤　생기부 보관함</button><button class="nav" data-page="materials">▣　자료 보관함</button><button class="nav" data-page="upload">＋　자료 등록</button>
+  </aside>
+  <main class="main">
+   <section id="page-home" class="page">
+    <div class="welcome"><div class="eyebrow">MY SPACE</div><h1>나의 기록 보관함</h1><p class="sub">학교생활의 중요한 기록을 차곡차곡 정리하세요.</p></div>
+    <div class="stats"><div class="stat"><span>생기부</span><strong id="recordCount">0</strong></div><div class="stat"><span>활동 자료</span><strong id="materialCount">0</strong></div><div class="stat"><span>전체 파일</span><strong id="totalCount">0</strong></div></div>
+    <div class="panel"><h2>빠른 시작</h2><div class="actions"><button class="btn" data-go="upload">새 자료 등록</button><button class="btn secondary" data-go="records">생기부 확인</button><button class="btn secondary" data-go="materials">자료 보관함</button></div></div>
+    <div class="panel"><h2>최근 등록 자료</h2><div id="recentList" class="list"></div></div>
+   </section>
+   <section id="page-records" class="page hidden"><div class="welcome"><div class="eyebrow">RECORD ARCHIVE</div><h1>생기부 보관함</h1><p class="sub">학년도와 학년별 학교생활기록부를 보관합니다.</p></div><div id="recordsList" class="list"></div></section>
+   <section id="page-materials" class="page hidden"><div class="welcome"><div class="eyebrow">MATERIAL ARCHIVE</div><h1>생기부 자료 보관함</h1><p class="sub">탐구 보고서, 발표 자료, 활동 사진 등을 보관합니다.</p></div><div id="materialsList" class="list"></div></section>
+   <section id="page-upload" class="page hidden">
+    <div class="welcome"><div class="eyebrow">ADD NEW FILE</div><h1>자료 등록</h1><p class="sub">파일은 로그인한 계정의 비공개 저장 공간에 보관됩니다.</p></div>
+    <div class="panel"><div class="field"><label>자료 종류</label><select id="kind"><option value="record">학교생활기록부</option><option value="material">생기부 관련 자료</option></select></div>
+     <div class="grid2"><div class="field"><label>자료 제목 *</label><input id="title" placeholder="예: 2026학년도 학교생활기록부"></div><div class="field"><label>학년도</label><select id="year"><option>2026</option><option>2025</option><option>2024</option><option>2023</option></select></div></div>
+     <div class="grid2"><div class="field"><label>학년</label><select id="grade"><option>1학년</option><option selected>2학년</option><option>3학년</option><option>기타</option></select></div><div class="field"><label>자료 분류</label><select id="category"><option>학교생활기록부</option><option>탐구 보고서</option><option>발표 자료</option><option>수행평가</option><option>활동 사진</option><option>독서 기록</option><option>기타</option></select></div></div>
+     <div class="field"><label>파일 선택 (PDF, DOCX, PPTX, XLSX, 이미지 / 최대 20MB)</label><input id="file" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png"></div>
+     <div class="field"><label>메모</label><textarea id="memo" placeholder="자료에 대한 간단한 설명"></textarea></div>
+     <button id="saveBtn" class="btn">내 보관함에 저장</button>
+    </div>
+   </section>
+  </main>
+ </div>
+</div>
+<footer>MY RECORD · PRIVATE SCHOOL LIFE ARCHIVE</footer><div id="toast" class="toast hidden"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY";
+const configured=SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("YOUR_") && !SUPABASE_ANON_KEY.includes("YOUR_");
+let client=null,user=null,files=[];
+const $=id=>document.getElementById(id);
+function toast(s){$('toast').textContent=s;$('toast').classList.remove('hidden');setTimeout(()=>$('toast').classList.add('hidden'),3000)}
+function showAuth(){ $('authScreen').classList.remove('hidden');$('appScreen').classList.add('hidden');$('logoutBtn').classList.add('hidden');$('userLabel').textContent='학생 기록 보관 서비스';}
+function showApp(){ $('authScreen').classList.add('hidden');$('appScreen').classList.remove('hidden');$('logoutBtn').classList.remove('hidden');$('userLabel').textContent=user.email||'내 계정';loadFiles();}
+function page(p){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));$('page-'+p).classList.remove('hidden');document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.page===p));}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>page(b.dataset.page));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>page(b.dataset.go));
+function empty(t){return `<div class="empty">${t}</div>`}
+function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function card(f){return `<article class="item"><div class="fileicon">${f.kind==='record'?'▤':'▣'}</div><div class="iteminfo"><strong>${escapeHtml(f.title)}</strong><small>${escapeHtml(f.year||'')} · ${escapeHtml(f.grade||'')} · ${escapeHtml(f.category||'')} · ${new Date(f.created_at).toLocaleDateString('ko-KR')}</small></div><button class="btn secondary small" data-open="${f.id}">열기</button><button class="btn danger small" data-delete="${f.id}">삭제</button></article>`}
+async function loadFiles(){const {data,error}=await client.from('documents').select('*').order('created_at',{ascending:false});if(error){toast('자료를 불러오지 못했습니다: '+error.message);return}files=data||[];render()}
+function render(){const rec=files.filter(f=>f.kind==='record'),mat=files.filter(f=>f.kind==='material');$('recordCount').textContent=rec.length;$('materialCount').textContent=mat.length;$('totalCount').textContent=files.length;$('recordsList').innerHTML=rec.length?rec.map(card).join(''):empty('등록된 생기부가 없습니다.');$('materialsList').innerHTML=mat.length?mat.map(card).join(''):empty('보관된 자료가 없습니다.');$('recentList').innerHTML=files.length?files.slice(0,4).map(card).join(''):empty('아직 등록된 자료가 없습니다.');document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>openFile(b.dataset.open));document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>deleteFile(b.dataset.delete))}
+async function openFile(id){const f=files.find(x=>x.id===id);if(!f)return;const {data,error}=await client.storage.from('private-records').createSignedUrl(f.storage_path,60);if(error){toast('파일을 열 수 없습니다.');return}window.open(data.signedUrl,'_blank','noopener')}
+async function deleteFile(id){if(!confirm('이 자료를 삭제할까요?'))return;const f=files.find(x=>x.id===id);if(!f)return;const a=await client.storage.from('private-records').remove([f.storage_path]);if(a.error){toast(a.error.message);return}const b=await client.from('documents').delete().eq('id',id);if(b.error){toast(b.error.message);return}toast('삭제했습니다.');loadFiles()}
+$('loginBtn').onclick=async()=>{if(!configured){toast('아직 서비스 관리자의 데이터베이스 연결 설정이 필요합니다.');return}const {data,error}=await client.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error){toast(error.message);return}user=data.user;showApp()};
+$('signupBtn').onclick=async()=>{if(!configured){toast('아직 서비스 관리자의 데이터베이스 연결 설정이 필요합니다.');return}const {data,error}=await client.auth.signUp({email:$('email').value,password:$('password').value});if(error){toast(error.message);return}toast('가입 요청을 처리했습니다. 이메일 인증 후 로그인하세요.')};
+$('logoutBtn').onclick=async()=>{await client.auth.signOut();user=null;files=[];showAuth()};
+$('saveBtn').onclick=async()=>{if(!user){toast('먼저 로그인하세요.');return}const file=$('file').files[0],title=$('title').value.trim();if(!title||!file){toast('제목과 파일을 모두 입력하세요.');return}if(file.size>20*1024*1024){toast('파일은 20MB 이하만 등록할 수 있습니다.');return}const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,'_'),path=`${user.id}/${crypto.randomUUID()}-${safe}`;const up=await client.storage.from('private-records').upload(path,file,{upsert:false});if(up.error){toast(up.error.message);return}const row={user_id:user.id,kind:$('kind').value,title,year:$('year').value,grade:$('grade').value,category:$('category').value,memo:$('memo').value,storage_path:path,file_name:file.name,file_size:file.size};const ins=await client.from('documents').insert(row);if(ins.error){await client.storage.from('private-records').remove([path]);toast(ins.error.message);return}toast('자료를 안전하게 저장했습니다.');$('title').value='';$('memo').value='';$('file').value='';page(row.kind==='record'?'records':'materials');loadFiles()};
+if(configured){client=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);client.auth.getSession().then(({data})=>{if(data.session){user=data.session.user;showApp()}});client.auth.onAuthStateChange((_event,session)=>{if(session&&!user){user=session.user;showApp()}})}else{$('authHint').textContent='배포 전 Supabase 프로젝트 주소와 공개 anon 키를 설정해야 로그인·저장이 작동합니다.'}
+</script>
+</body></html>
